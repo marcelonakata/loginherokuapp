@@ -1,3 +1,5 @@
+import LoginPage from '../support/PageObject/loginPage'
+
 describe("Login Page Test Suite", () => {
    
     before(function() {  
@@ -15,6 +17,8 @@ describe("Login Page Test Suite", () => {
         cy.login(this.validUsername,this.validPassword);
      
         cy.verifyMessage('You logged into a secure area!');
+
+        cy.contains('Secure Area');
         
         cy.url().should('contain', '/secure');
     });
@@ -23,6 +27,8 @@ describe("Login Page Test Suite", () => {
         cy.login(this.validUsername, "InvalidPassword");
 
         cy.verifyMessage('Your password is invalid!');
+
+        cy.contains('Secure Area').should('not.exist');
     
         cy.url().should('not.contain', '/secure');
     });
@@ -32,6 +38,8 @@ describe("Login Page Test Suite", () => {
 
         cy.verifyMessage('Your username is invalid!');
 
+        cy.contains('Secure Area').should('not.exist');
+
         cy.url().should('not.contain', '/secure');
     });
 
@@ -39,6 +47,8 @@ describe("Login Page Test Suite", () => {
         cy.login("", "");
 
         cy.verifyMessage('Your username is invalid!');
+
+        cy.contains('Secure Area').should('not.exist');
 
         cy.url().should('not.contain', '/secure');
     });
@@ -48,16 +58,32 @@ describe("Login Page Test Suite", () => {
 
         cy.verifyMessage('Your username is invalid!');
 
+        cy.contains('Secure Area').should('not.exist');
+
         cy.url().should('not.contain', '/secure');
     });
 
-    it('Valid username and empty password', function() {
+    it('Validate login with valid username and empty password', function() {
         cy.login(this.validUsername, "");
 
         cy.verifyMessage('Your password is invalid!');
 
+        cy.contains('Secure Area').should('not.exist');
+
         cy.url().should('not.contain', '/secure');
     });
+
+    it('Verify if user is able to submit login with [Enter]', function() {
+        const loginPage = new LoginPage
+
+        loginPage.getUsername().type(this.validUsername)
+        loginPage.getPassword().type(this.validPassword + '{enter}');
+
+        cy.contains('Secure Area');
+        
+        cy.url().should('contain', '/secure');
+
+    })
 
     it('Validate log out', function() {
         cy.login(this.validUsername, this.validPassword);
@@ -69,13 +95,19 @@ describe("Login Page Test Suite", () => {
         cy.get("i.icon-2x.icon-signout").click();
 
         cy.verifyMessage('You logged out of the secure area!');
+
+        cy.contains('Login Page')
           
         cy.url().should('not.contain', '/secure');
     })
 
-    it("Validate if user is not allowed to access secure area without filling credentials", () =>{
+    it("Verify if user is not allowed to access secure area without filling credentials", () =>{
         cy.visit('/secure')
 
         cy.verifyMessage('You must login to view the secure area!');
+
+        cy.contains('Login Page')
+
+        cy.url().should('not.contain', '/secure');
     })
 });
