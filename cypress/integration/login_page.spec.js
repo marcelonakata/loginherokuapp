@@ -73,7 +73,7 @@ describe("Login Page Test Suite", () => {
         cy.url().should('not.contain', '/secure');
     });
 
-    it('Verify if user is able to submit login with [Enter]', function() {
+    it('Verify if user is able to submit login form with [Enter]', function() {
         const loginPage = new LoginPage
 
         loginPage.getUsername().type(this.validUsername)
@@ -83,6 +83,15 @@ describe("Login Page Test Suite", () => {
         
         cy.url().should('contain', '/secure');
 
+    })
+
+    it('Verify if password is displayed with masked format', function (){
+        const loginPage = new LoginPage
+
+        loginPage.getUsername().type(this.validUsername)
+        loginPage.getPassword().type(this.validPassword);
+
+        loginPage.getPassword().invoke('attr', 'type').should('contain', 'password')
     })
 
     it('Validate log out', function() {
@@ -101,12 +110,40 @@ describe("Login Page Test Suite", () => {
         cy.url().should('not.contain', '/secure');
     })
 
-    it("Verify if user is not allowed to access secure area without filling credentials", () =>{
+    it("Verify if user is not allowed to directly access the secure area link", () =>{
         cy.visit('/secure')
 
         cy.verifyMessage('You must login to view the secure area!');
 
         cy.contains('Login Page')
+
+        cy.url().should('not.contain', '/secure');
+    })
+
+    it("Verify if user is logged out after clicking [Back] on the browser after logging in", function () {
+        cy.login(this.validUsername, this.validPassword);
+
+        cy.verifyMessage('You logged into a secure area!');
+
+        cy.go('back')
+
+        cy.contains('Login Page')
+
+        cy.url().should('not.contain', '/secure');
+    })
+
+    //This test is going to fail, because I think it's an actually bug on the login page
+    it("Verify if user stays logged out after clicking [Back] and then [Forward] on the browser after logging in", function () {
+                
+        cy.login(this.validUsername, this.validPassword);
+
+        cy.verifyMessage('You logged into a secure area!');
+
+        cy.go('back')
+
+        cy.contains('Login Page')
+
+        cy.go('forward')
 
         cy.url().should('not.contain', '/secure');
     })
