@@ -1,7 +1,5 @@
 {
     "validUsername": "tomsmith",
-    "validPassword": "SuperSecretPassword!",
-    "messageInvalidUsername": "Your username is invalid!",
-    "messageInvalidPassword": "Your password is invalid!"
+    "validPassword": "SuperSecretPassword!"
 }
   
