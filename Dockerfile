@@ -13,7 +13,7 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-RUN chmod -R 777 ./cypress/reports
+RUN chmod -R 777 cypress/reports
 
 # Run the Cypress tests
 CMD ["npx", "cypress", "run"]
