@@ -16,7 +16,7 @@ jobs:
       - name: Build and run Docker image
         run: |
           docker build -t cypress-test .
-          docker run -v /cypress/reports:/app/cypress/reports cypress-test
+          docker run -v cypress/reports:/app/cypress/reports/mochawesome.html cypress-test
 
       - name: Save Cypress Artifacts
         uses: actions/upload-artifact@v3
