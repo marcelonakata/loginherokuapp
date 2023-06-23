@@ -16,12 +16,12 @@ jobs:
       - name: Build and run Docker image
         run: |
           docker build -t cypress-test .
-          docker run -v ${PWD}/cypress/reports:/app/cypress/reports/mochawesome.html cypress-test
+          docker run -v ${PWD}/cypress/reports:/app/cypress/reports/ cypress-test
 
       - name: Save Cypress Artifacts
         uses: actions/upload-artifact@v3
         if: always()
         with:
           name: Cypress Artifacts
-          path: cypress/reports/mochawesome.html
+          path: cypress/reports/
           retention-days: 7
