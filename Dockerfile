@@ -14,4 +14,4 @@ RUN npm install
 COPY . .
 
 # Run the Cypress tests
-CMD ["npm", "run", "test"]
+CMD ["npx", "cypress", "run"]

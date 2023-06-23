@@ -1,10 +1,10 @@
 {
     "baseUrl" : "http://the-internet.herokuapp.com",
-    "reporter": "./node_modules/mochawesome/src/mochawesome.js",
+    "reporter": "mochawesome",
     "reporterOptions": {
-      "reportDir": "cypress/reports/separate-reports",
-      "overwrite": false,
-      "html": false,
+      "reportDir": "cypress/reports",
+      "overwrite": true,
+      "html": true,
       "json": true
     }
 }
